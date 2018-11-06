@@ -73,7 +73,7 @@ def chooseAction(body):
     action = PASS
     action = moveTowardsCenterOfMap(body)
     if body["suddenDeath"] < 1:
-        action = suddenDeathMove(body)
+        action = SHOOT #suddenDeathMove(body)
     return action
 
 env = os.environ
