@@ -84,8 +84,6 @@ def moveTowardsCenterOfMap(body):
 
 
 
-
-
 def chooseAction(body):
     action = PASS
     # c = count()
@@ -100,7 +98,8 @@ def chooseAction(body):
         save_bonuses(body['bonusTiles'])
     bonuses = get_bonuses_from_memory()
     if bonuses:
-        action = moveTowardsPoint(body, bonuses[0]['x'], bonuses[0]['x'])
+        closest = get_closest(body['you']['x'], body["you"]["y"], bonuses)
+        action = moveTowardsPoint(body, closest['x'], closest['y'])
     if bonusInFrontOfPenguin(body):
         action = ROTATE_LEFT
 

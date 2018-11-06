@@ -1,3 +1,5 @@
+from math import *
+
 def count():
     c = 0
     with open('count.txt', 'r') as f:
@@ -5,6 +7,13 @@ def count():
     with open('count.txt', 'w') as f:
         f.write(str(c + 1))
     return c + 1
+
+def euc_dist(x1, y1, x2, y2):
+    return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
+
+def get_closest(px, py, points):
+    d = [(euc_dist(px, py, points[i]['x'], points[i]['y']), i) for i in range(len(points))]
+    return points[min(d)[1]]
 
 def setup_data():
     with open('count.txt', 'w') as f:
@@ -40,12 +49,12 @@ def get_bonuses_from_memory():
     return [{'x': b[0], 'y': b[1], 'type': b[2], 'value': b[3]} for b in bonuses]
 
 #%%
-# setup_bonuses()
-#
-# save_bonuses([{'x' : 1, 'y' : 2, 'type' : 'weapon-range', 'value' : 1}, {'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1}])
-#
-# save_bonuses([{'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1}, {'x' : 5, 'y' : 6, 'type' : 'weapon-damage', 'value' : 1}])
-#
-# delete_bonus_from_memory({'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1})
-#
-# get_bonuses_from_memory()
+setup_bonuses()
+
+save_bonuses([{'x' : 1, 'y' : 2, 'type' : 'weapon-range', 'value' : 1}, {'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1}])
+
+save_bonuses([{'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1}, {'x' : 5, 'y' : 6, 'type' : 'weapon-damage', 'value' : 1}])
+
+delete_bonus_from_memory({'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1})
+
+get_closest(1, 1, get_bonuses_from_memory())
