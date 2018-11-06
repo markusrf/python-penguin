@@ -68,6 +68,7 @@ def enemyPosition(body):
         return False
 
 def enemyStraightAhead(body):
+    """Returnerer true om fienden er rett foran deg"""
     enemyPos = enemyPosition(body)
     position = body["you"]["x"], body["you"]["y"]
     direction = body["you"]["direction"]
@@ -82,7 +83,14 @@ def enemyStraightAhead(body):
         return enemyPos[0] > position[0]
 
 def ableToWin(body):
-    pass
+    """Returnerer true om du har mulighet for å vinne en skyteduell"""
+    enemyHealth = body["enemies"][0]["strength"]
+    enemyDamage = body["enemies"][0]["weaponDamage"]
+    health = body["you"]["strength"]
+    weaponDamage = body["you"]["weaponDamage"]
+
+    return enemyHealth // weaponDamage <= health // enemyDamage
+
 
 def chooseAction(body):
     if body["suddenDeath"] < 1:
