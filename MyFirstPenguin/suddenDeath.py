@@ -1,7 +1,7 @@
 import math
 
-from eucDist import eucDistance as eucDist
-from run import moveTowardsPoint as moveTowardsPoint
+import eucDist
+import run
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
@@ -36,18 +36,18 @@ def moveToClosestWall(body):
     y = body["you"]["y"]
 
     #Identify which wall is cloesest and move towards it
-    closest = eucDist(body, x, 0)
-    action = moveTowardsPoint(body, x, 0)
+    closest = eucDist.eucDistance(body, x, 0)
+    action = run.moveTowardsPoint(body, x, 0)
 
-    if eucDist(body, x, body["mapHeight"]) < closest:
-        action = moveTowardsPoint(body, x, body["mapHeight"])
-        closest = eucDist(body, x, body["mapHeight"])
-    if eucDist(body, 0, y) < closest:
-        action = moveTowardsPoint(body, 0, y)
-        closest = eucDist(body, 0, y)
-    if eucDist(body, body["mapWidth"], y) < closest:
-        action = moveTowardsPoint(body, body["mapWidth"], y)
-        closest = eucDist(body, body["mapWidth"], y)
+    if eucDist.eucDistance(body, x, body["mapHeight"]) < closest:
+        action = run.moveTowardsPoint(body, x, body["mapHeight"])
+        closest = eucDist.eucDistance(body, x, body["mapHeight"])
+    if eucDist.eucDistance(body, 0, y) < closest:
+        action = run.moveTowardsPoint(body, 0, y)
+        closest = eucDist.eucDistance(body, 0, y)
+    if eucDist.eucDistance(body, body["mapWidth"], y) < closest:
+        action = run.moveTowardsPoint(body, body["mapWidth"], y)
+        closest = eucDist.eucDistance(body, body["mapWidth"], y)
     
     return action
 
@@ -56,9 +56,9 @@ def avoidFire(body):
 
     # identify closest fire
     closestFire = body["fire"][0]
-    closestFireDistance = eucDist(body, closestFire["x"], closestFire["y"])
+    closestFireDistance = eucDist.eucDistance(body, closestFire["x"], closestFire["y"])
     for fire in body["fire"][1:]:
-        closestFireDistance = eucDist(body, fire["x"], fire["y"])
+        closestFireDistance = eucDist.eucDistance(body, fire["x"], fire["y"])
         closestFire = fire
     
     # find distance
@@ -69,13 +69,13 @@ def avoidFire(body):
     # if closest in x direction, move away in the x axis
     if distX < distY:
         if body["you"]["x"] < closestFire["x"]:
-            action = moveTowardsPoint(body, body["you"]["x"]-1, body["you"]["y"])
+            action = run.moveTowardsPoint(body, body["you"]["x"]-1, body["you"]["y"])
         else:
-            action = moveTowardsPoint(body, body["you"]["x"]+1, body["you"]["y"])
+            action = run.moveTowardsPoint(body, body["you"]["x"]+1, body["you"]["y"])
     else:
         if body["you"]["y"] < closestFire["y"]:
-            action = moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]-1)
+            action = run.moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]-1)
         else:
-            action = moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]+1)
+            action = run.moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]+1)
         
     return action
