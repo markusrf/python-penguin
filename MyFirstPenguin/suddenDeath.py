@@ -32,6 +32,8 @@ def suddenDeathMove(body):
 def moveToClosestWall(body):
     action = PASS
 
+    return SHOOT
+
     x = body["you"]["x"]
     y = body["you"]["y"]
 
