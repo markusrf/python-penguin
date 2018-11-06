@@ -66,15 +66,16 @@ def avoidFire(body):
     distY = abs(body["you"]["y"] - closestFire["y"])
 
     # use distance to move oposite way
-    if distX < distY: # if closest in x direction, move away in the x axis
-        if body["you"]["x"] - closestFire["x"] < 0:
-            action = moveTowardsPoint(body, body["you"]["x"]+1, body["you"]["y"])
-        else:
+    # if closest in x direction, move away in the x axis
+    if distX < distY:
+        if body["you"]["x"] < closestFire["x"]:
             action = moveTowardsPoint(body, body["you"]["x"]-1, body["you"]["y"])
-    else: # if closest in y direction, move away in the y axis
-        if body["you"]["y"] - closestFire["y"] < 0:
-            action = moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]+1)
         else:
+            action = moveTowardsPoint(body, body["you"]["x"]+1, body["you"]["y"])
+    else:
+        if body["you"]["y"] < closestFire["y"]:
             action = moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]-1)
+        else:
+            action = moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]+1)
         
     return action
