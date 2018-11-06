@@ -2,6 +2,7 @@ import os
 import json
 import random
 import math
+import MyFirstPenguin.moveTowardsPowerup as powerups
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
@@ -67,9 +68,19 @@ def enemyPosition(body):
     except:
         return False
 
+def powerMove(body):
+    if powerups.canSeeHearts(body):
+       return moveTowardsPoint(powerups.moveTowardHeart(body))
+    else:
+       return moveTowardsPoint(powerups.moveTowardPowerup())
+
+
 def chooseAction(body):
     action = PASS
     action = moveTowardsCenterOfMap(body)
+    if powerups.canSeePowerup(body):
+        action = powerMove(body)
+
     return action
 
 env = os.environ
