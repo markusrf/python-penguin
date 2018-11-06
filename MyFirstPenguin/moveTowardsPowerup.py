@@ -1,4 +1,4 @@
-import MyFirstPenguin.eucDist
+import eucDist
 
 def canSeePowerup(body):
     if  body["bonusTiles"]:
