@@ -2,7 +2,7 @@ import os
 import json
 import random
 import math
-import MyFirstPenguin.moveTowardsPowerup as powerups
+import moveTowardsPowerup as powerups
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
