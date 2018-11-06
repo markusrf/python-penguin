@@ -2,6 +2,7 @@ import os
 import json
 import random
 import math
+from utils import *
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
@@ -62,17 +63,10 @@ def moveTowardsCenterOfMap(body):
 
 def count():
     c = 0
-    try:
-        with open('count.txt', 'r') as f:
-            c = int(f.readline().strip())
-    except:
-        pass
-
-    # try:
+    with open('count.txt', 'r') as f:
+        c = int(f.readline().strip())
     with open('count.txt', 'w') as f:
         f.write(str(c + 1))
-    # except:
-    #     return ROTATE_LEFT
     return c + 1
 
 def setup_data():
