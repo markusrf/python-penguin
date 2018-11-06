@@ -82,7 +82,6 @@ def chooseAction(body):
         action = ROTATE_LEFT
     # else:
     #     action = RETREAT
-
     # action = moveTowardsCenterOfMap(body)
     return action
 
