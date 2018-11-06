@@ -72,7 +72,7 @@ def powerMove(body):
     if powerups.canSeeHearts(body):
        return moveTowardsPoint(powerups.moveTowardHeart(body))
     else:
-       return moveTowardsPoint(powerups.moveTowardPowerup())
+       return moveTowardsPoint(powerups.moveTowardPowerup(body))
 
 
 def chooseAction(body):
