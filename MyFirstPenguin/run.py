@@ -3,8 +3,6 @@ import json
 import random
 import math
 
-counter = 0
-
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
 ADVANCE = "advance"
@@ -64,11 +62,7 @@ def moveTowardsCenterOfMap(body):
 
 def chooseAction(body):
     action = PASS
-    if counter == 0:
-        action = moveTowardsCenterOfMap(body)
-        print("moves")
-    else:
-        print("passing")
+    action = moveTowardsPoint(body, 0,0)
     return action
 
 env = os.environ
@@ -83,7 +77,6 @@ if req_params_query == "info":
 elif req_params_query == "command":    
     body = json.loads(open(env["req"], "r").read())
     returnObject["command"] = chooseAction(body)
-    counter += 1
 
 response["body"] = returnObject
 responseBody.write(json.dumps(response))
