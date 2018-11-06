@@ -1,7 +1,7 @@
 import math
 
-from MyFirstPenguin.eucDist import eucDistance as eucDist
-from MyFirstPenguin.run import moveTowardsPoint
+from eucDist import eucDistance as eucDist
+from run import moveTowardsPoint
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"

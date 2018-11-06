@@ -3,7 +3,7 @@ import json
 import random
 import math
 
-from MyFirstPenguin.suddenDeath import suddenDeathMove 
+from suddenDeath import suddenDeathMove 
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
