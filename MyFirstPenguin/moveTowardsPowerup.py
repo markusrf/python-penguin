@@ -15,7 +15,7 @@ def findClosestPowerup(body):
     distance = 999
     shortestDist = body["bonusTiles"][0]
     for x in body["bonusTiles"]:
-        distToPow = MyFirstPenguin.eucDist.eucDistance(body, x["x"], x["y"])
+        distToPow = eucDist.eucDistance(body, x["x"], x["y"])
         if distToPow < distance:
             distance = distToPow
             shortestDist = body["bonusTiles"][x]
@@ -31,7 +31,7 @@ def findNearestHeart(body):
     distance = 99
     closestHeart = hearts[0]
     for x in hearts:
-        distToHeart = MyFirstPenguin.eucDist.eucDistance(body, x["x"], x["y"])
+        distToHeart = eucDist.eucDistance(body, x["x"], x["y"])
         if distToHeart < distance:
             distance = distToHeart
             closestHeart = hearts[x]
