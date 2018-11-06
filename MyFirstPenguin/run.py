@@ -2,7 +2,7 @@ import os
 import json
 import random
 import math
-# from utils import *
+from utils import *
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
@@ -22,6 +22,12 @@ def doesCellContainWall(walls, x, y):
             return True
     return False
 
+def doesCellContainBonus(bonuses, x, y):
+    for b in bonuses:
+        if b["x"] == x and b["y"] == y:
+            return True
+    return False
+
 def wallInFrontOfPenguin(body):
     xValueToCheckForWall = body["you"]["x"]
     yValueToCheckForWall = body["you"]["y"]
@@ -36,6 +42,21 @@ def wallInFrontOfPenguin(body):
     elif bodyDirection == "right":
         xValueToCheckForWall += 1
     return doesCellContainWall(body["walls"], xValueToCheckForWall, yValueToCheckForWall)
+
+def bonusInFrontOfPenguin(body):
+    xValueToCheckForWall = body["you"]["x"]
+    yValueToCheckForWall = body["you"]["y"]
+    bodyDirection = body["you"]["direction"]
+
+    if bodyDirection == "top":
+        yValueToCheckForWall -= 1
+    elif bodyDirection == "bottom":
+        yValueToCheckForWall += 1
+    elif bodyDirection == "left":
+        xValueToCheckForWall -= 1
+    elif bodyDirection == "right":
+        xValueToCheckForWall += 1
+    return doesCellContainBonus(body["bonusTiles"], xValueToCheckForWall, yValueToCheckForWall)
 
 def moveTowardsPoint(body, pointX, pointY):
     penguinPositionX = body["you"]["x"]
@@ -61,28 +82,28 @@ def moveTowardsCenterOfMap(body):
     centerPointY = math.floor(body["mapHeight"] / 2)
     return moveTowardsPoint(body, centerPointX, centerPointY)
 
-def count():
-    c = 0
-    with open('count.txt', 'r') as f:
-        c = int(f.readline().strip())
-    with open('count.txt', 'w') as f:
-        f.write(str(c + 1))
-    return c + 1
 
-def setup_data():
-    with open('count.txt', 'w') as f:
-        f.write(str(0))
+
+
 
 def chooseAction(body):
     action = PASS
-    c = count()
-    # if c == ROTATE_LEFT:
-    #     return count
-    if c % 10 == 0:
+    # c = count()
+    # # if c == ROTATE_LEFT:
+    # #     return count
+    # if c % 10 == 0:
+    #     action = ROTATE_LEFT
+    # # else:
+    # #     action = RETREAT
+    # # action = moveTowardsCenterOfMap(body)
+    if body['bonusTiles']:
+        save_bonuses(body['bonusTiles'])
+    bonuses = get_bonuses_from_memory()
+    if bonuses:
+        action = moveTowardsPoint(body, bonuses[0]['x'], bonuses[0]['x'])
+    if bonusInFrontOfPenguin(body):
         action = ROTATE_LEFT
-    # else:
-    #     action = RETREAT
-    # action = moveTowardsCenterOfMap(body)
+
     return action
 
 env = os.environ
@@ -95,6 +116,7 @@ if req_params_query == "info":
     returnObject["name"] = "PiNgU"
     returnObject["team"] = "Team Noot Noot"
     setup_data()
+    setup_bonuses()
 elif req_params_query == "command":
     body = json.loads(open(env["req"], "r").read())
     returnObject["command"] = chooseAction(body)
