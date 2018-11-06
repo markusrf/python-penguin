@@ -3,7 +3,7 @@ import json
 import random
 import math
 
-import MyFirstPenguin.suddenDeath.suddenDeathMove
+from MyFirstPenguin.suddenDeath import suddenDeathMove
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
@@ -73,7 +73,7 @@ def chooseAction(body):
     action = PASS
     action = moveTowardsCenterOfMap(body)
     if body["suddenDeath"] < 1:
-        action = SHOOT #suddenDeathMove(body)
+        action = suddenDeathMove(body)
     return action
 
 env = os.environ
