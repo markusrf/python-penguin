@@ -68,22 +68,22 @@ def count():
     except:
         pass
 
-    try:
-        with open('count.txt', 'w') as f:
-            f.write(str(c + 1))
-    except:
-        return ROTATE_LEFT
+    # try:
+    with open('count.txt', 'w') as f:
+        f.write(str(c + 1))
+    # except:
+    #     return ROTATE_LEFT
     return c + 1
 
 def chooseAction(body):
-    action = RETREAT
+    action = PASS
     c = count()
-    if c == ROTATE_LEFT:
-        return count
-    if c % 2 == 1:
-        action = ADVANCE
-    else:
-        action = RETREAT
+    # if c == ROTATE_LEFT:
+    #     return count
+    if c % 10 == 0:
+        action = ROTATE_LEFT
+    # else:
+    #     action = RETREAT
 
     # action = moveTowardsCenterOfMap(body)
     return action
