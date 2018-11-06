@@ -67,10 +67,34 @@ def enemyPosition(body):
     except:
         return False
 
+def enemyStraightAhead(body):
+    enemyPos = enemyPosition(body)
+    position = body["you"]["x"], body["you"]["y"]
+    direction = body["you"]["direction"]
+
+    if direction == "top":
+        return enemyPos[1] < position[1]
+    elif direction == "bottom":
+        return enemyPos[1] > position[1]
+    elif direction == "left":
+        return enemyPos[0] < position[0]
+    else:
+        return enemyPos[0] > position[0]
+
+def ableToWin(body):
+    pass
+
 def chooseAction(body):
-    action = PASS
-    action = moveTowardsCenterOfMap(body)
+    if body["suddenDeath"] < 1:
+        action = suddenDeathMode(body)
+    elif body["status"] == "hit":
+        escape()
+    elif enemyStraightAhead(body) and ableToWin(body):
+        action = SHOOT
+    else:
+        action = moveTowardsCenterOfMap(body)
     return action
+
 
 env = os.environ
 req_params_query = env['REQ_PARAMS_QUERY']
