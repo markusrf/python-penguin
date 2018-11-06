@@ -2,6 +2,7 @@ import os
 import json
 import random
 import math
+from utils import *
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
@@ -62,7 +63,13 @@ def moveTowardsCenterOfMap(body):
 
 def chooseAction(body):
     action = PASS
-    action = moveTowardsCenterOfMap(body)
+    count = count()
+    if count % 2 == 1:
+        action = PASS
+    else:
+        action ROTATE_LEFT
+
+    # action = moveTowardsCenterOfMap(body)
     return action
 
 env = os.environ
@@ -74,7 +81,7 @@ returnObject = {}
 if req_params_query == "info":
     returnObject["name"] = "PiNgU"
     returnObject["team"] = "Team Noot Noot"
-elif req_params_query == "command":    
+elif req_params_query == "command":
     body = json.loads(open(env["req"], "r").read())
     returnObject["command"] = chooseAction(body)
 
