@@ -65,9 +65,9 @@ def chooseAction(body):
     action = PASS
     count = count()
     if count % 2 == 1:
-        action = PASS
+        action = ADVANCE
     else:
-        action ROTATE_LEFT
+        action RETREAT
 
     # action = moveTowardsCenterOfMap(body)
     return action
