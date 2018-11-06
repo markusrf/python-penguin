@@ -60,6 +60,13 @@ def moveTowardsCenterOfMap(body):
     centerPointY = math.floor(body["mapHeight"] / 2)
     return moveTowardsPoint(body, centerPointX, centerPointY)
 
+def enemyPosition(body):
+    """Returnerer tuppel med x,y-koordinater hvis de eksisterer"""
+    try:
+        return body["enemies"][0]["x"], body["enemies"][0]["y"]
+    except:
+        return False
+
 def chooseAction(body):
     action = PASS
     action = moveTowardsCenterOfMap(body)
@@ -74,7 +81,7 @@ returnObject = {}
 if req_params_query == "info":
     returnObject["name"] = "PiNgU"
     returnObject["team"] = "Team Noot Noot"
-elif req_params_query == "command":    
+elif req_params_query == "command":
     body = json.loads(open(env["req"], "r").read())
     returnObject["command"] = chooseAction(body)
 
