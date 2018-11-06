@@ -100,8 +100,8 @@ def chooseAction(body):
     if bonuses:
         closest = get_closest(body['you']['x'], body["you"]["y"], bonuses)
         action = moveTowardsPoint(body, closest['x'], closest['y'])
-    if bonusInFrontOfPenguin(body):
-        action = ROTATE_LEFT
+        if bonusInFrontOfPenguin(body):
+            delete_bonus_from_memory(closest)
 
     return action
 
