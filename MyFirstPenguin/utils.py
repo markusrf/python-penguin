@@ -49,12 +49,12 @@ def get_bonuses_from_memory():
     return [{'x': b[0], 'y': b[1], 'type': b[2], 'value': b[3]} for b in bonuses]
 
 #%%
-setup_bonuses()
-
-save_bonuses([{'x' : 1, 'y' : 2, 'type' : 'weapon-range', 'value' : 1}, {'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1}])
-
-save_bonuses([{'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1}, {'x' : 5, 'y' : 6, 'type' : 'weapon-damage', 'value' : 1}])
-
-delete_bonus_from_memory({'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1})
-
-get_closest(1, 1, get_bonuses_from_memory())
+# setup_bonuses()
+#
+# save_bonuses([{'x' : 1, 'y' : 2, 'type' : 'weapon-range', 'value' : 1}, {'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1}])
+#
+# save_bonuses([{'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1}, {'x' : 5, 'y' : 6, 'type' : 'weapon-damage', 'value' : 1}])
+#
+# delete_bonus_from_memory({'x' : 3, 'y' : 4, 'type' : 'strength', 'value' : 1})
+#
+# get_closest(1, 1, get_bonuses_from_memory())
