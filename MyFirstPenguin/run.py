@@ -2,7 +2,7 @@ import os
 import json
 import random
 import math
-from utils import *
+from MyFirstPenguin.utils import *
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
