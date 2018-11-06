@@ -1,5 +1,8 @@
 import math
 
+from MyFirstPenguin.eucDist import eucDistance as eucDist
+from MyFirstPenguin.run import moveTowardsPoint
+
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
 ADVANCE = "advance"
@@ -32,19 +35,18 @@ def moveToClosestWall(body):
     x = body["you"]["x"]
     y = body["you"]["y"]
 
-    #find closest wall
-    top = eucDistance(body, x, 0)
-    bottom = eucDistance(body, x, body["mapHeight"])
-    left = eucDistance(body, 0, y)
-    right = eucDistance(body, body["mapWidth"], y)
+    #move towards closest wall
+    closest = eucDist(body, x, 0)
+    action = moveTowardsPoint(body, x, 0)
 
+    if eucDist(body, x, body["mapHeight"]) < closest:
+        action = moveTowardsPoint(body, x, body["mapHeight"])
+        closest = eucDist(body, x, body["mapHeight"])
+    if eucDist(body, 0, y) < closest:
+        action = moveTowardsPoint(body, 0, y)
+        closest = eucDist(body, 0, y)
+    if eucDist(body, body["mapWidth"], y) < closest:
+        action = moveTowardsPoint(body, body["mapWidth"], y)
+        closest = eucDist(body, body["mapWidth"], y)
     
-
     return action
-
-
-def eucDistance(body, pointX, pointY):
-    penguinPositionX = body["you"]["x"]
-    penguinPositionY = body["you"]["y"]
-
-    return math.sqrt((penguinPositionX-pointX)**2 + (penguinPositionY-pointY)**2)
