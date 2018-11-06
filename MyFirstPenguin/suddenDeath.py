@@ -25,7 +25,7 @@ def suddenDeathMode(body):
         action = moveToClosestWall(body)
     # If fire is sighted, run away
     else:
-        pass 
+        action = avoidFire(body)
 
     return action
 
@@ -35,7 +35,7 @@ def moveToClosestWall(body):
     x = body["you"]["x"]
     y = body["you"]["y"]
 
-    #move towards closest wall
+    #Identify which wall is cloesest and move towards it
     closest = eucDist(body, x, 0)
     action = moveTowardsPoint(body, x, 0)
 
@@ -49,4 +49,32 @@ def moveToClosestWall(body):
         action = moveTowardsPoint(body, body["mapWidth"], y)
         closest = eucDist(body, body["mapWidth"], y)
     
+    return action
+
+def avoidFire(body):
+    action = PASS
+
+    # identify closest fire
+    closestFire = body["fire"][0]
+    closestFireDistance = eucDist(body, closestFire["x"], closestFire["y"])
+    for fire in body["fire"][1:]:
+        closestFireDistance = eucDist(body, fire["x"], fire["y"])
+        closestFire = fire
+    
+    # find distance
+    distX = abs(body["you"]["x"] - closestFire["x"])
+    distY = abs(body["you"]["y"] - closestFire["y"])
+
+    # use distance to move oposite way
+    if distX < distY: # if closest in x direction, move away in the x axis
+        if body["you"]["x"] - closestFire["x"] < 0:
+            action = moveTowardsPoint(body, body["you"]["x"]+1, body["you"]["y"])
+        else:
+            action = moveTowardsPoint(body, body["you"]["x"]-1, body["you"]["y"])
+    else: # if closest in y direction, move away in the y axis
+        if body["you"]["y"] - closestFire["y"] < 0:
+            action = moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]+1)
+        else:
+            action = moveTowardsPoint(body, body["you"]["x"], body["you"]["y"]-1)
+        
     return action
