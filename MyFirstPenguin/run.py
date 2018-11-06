@@ -61,13 +61,13 @@ def moveTowardsCenterOfMap(body):
     centerPointY = math.floor(body["mapHeight"] / 2)
     return moveTowardsPoint(body, centerPointX, centerPointY)
 
-def count():
-    c = 0
-    with open('count.txt', 'r') as f:
-        c = int(f.readline().strip())
-    with open('count.txt', 'w') as f:
-        f.write(str(c + 1))
-    return c + 1
+# def count():
+#     c = 0
+#     with open('count.txt', 'r') as f:
+#         c = int(f.readline().strip())
+#     with open('count.txt', 'w') as f:
+#         f.write(str(c + 1))
+#     return c + 1
 
 def setup_data():
     with open('count.txt', 'w') as f:
