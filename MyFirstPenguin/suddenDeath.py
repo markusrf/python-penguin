@@ -17,7 +17,7 @@ MOVE_LEFT = {"top" : ROTATE_LEFT, "bottom" : ROTATE_RIGHT, "right" : ROTATE_RIGH
 
 # Run to the edge of the map when sudden death mode is on
 # TODO: Add safe run, avoid enemy fire when moving
-def suddenDeathMode(body):
+def suddenDeathMove(body):
     action = PASS
 
     # If no fire is sighted, run to the edge closes to you
