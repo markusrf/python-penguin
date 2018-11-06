@@ -75,6 +75,10 @@ def count():
     #     return ROTATE_LEFT
     return c + 1
 
+def setup_data():
+    with open('count.txt', 'w') as f:
+        f.write(str(c + 1))
+
 def chooseAction(body):
     action = PASS
     c = count()
@@ -97,6 +101,7 @@ returnObject = {}
 if req_params_query == "info":
     returnObject["name"] = "PiNgU"
     returnObject["team"] = "Team Noot Noot"
+    setup_data()
 elif req_params_query == "command":
     body = json.loads(open(env["req"], "r").read())
     returnObject["command"] = chooseAction(body)
