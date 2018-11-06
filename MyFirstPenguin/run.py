@@ -66,6 +66,9 @@ def chooseAction(body):
     action = PASS
     if counter == 0:
         action = moveTowardsCenterOfMap(body)
+        print("moves")
+    else:
+        print("passing")
     return action
 
 env = os.environ
