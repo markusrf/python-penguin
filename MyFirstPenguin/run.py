@@ -62,7 +62,7 @@ def moveTowardsCenterOfMap(body):
     return moveTowardsPoint(body, centerPointX, centerPointY)
 
 def chooseAction(body):
-    action = PASS
+    action = RETREAT
     count = count()
     if count % 2 == 1:
         action = ADVANCE
