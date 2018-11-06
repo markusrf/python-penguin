@@ -13,28 +13,33 @@ def canSeeHearts(body):
 
 def findClosestPowerup(body):
     distance = 999
+    i = -1
     shortestDist = body["bonusTiles"][0]
     for x in body["bonusTiles"]:
+        i+=1
         distToPow = eucDist.eucDistance(body, x["x"], x["y"])
         if distToPow < distance:
             distance = distToPow
-            shortestDist = body["bonusTiles"][x]
+            shortestDist = body["bonusTiles"][i]
     return shortestDist
 
 
 def moveTowardPowerup(body):
     closest = findClosestPowerup(body)
+    print(closest)
     return (body, closest["x"], closest["y"])
 
 def findNearestHeart(body):
     hearts = [x for x in body["bonusTiles"] if x["type"] == "strength"]
     distance = 99
+    i = -1
     closestHeart = hearts[0]
     for x in hearts:
+        i += 1
         distToHeart = eucDist.eucDistance(body, x["x"], x["y"])
         if distToHeart < distance:
             distance = distToHeart
-            closestHeart = hearts[x]
+            closestHeart = hearts[i]
     return closestHeart
 
 def moveTowardHeart(body):
