@@ -77,13 +77,13 @@ def count():
 
 def chooseAction(body):
     action = RETREAT
-    count = count()
-    if count == ROTATE_LEFT:
-        return count
-    if count % 2 == 1:
-        action = ADVANCE
-    else:
-        action RETREAT
+    # count = count()
+    # if count == ROTATE_LEFT:
+    #     return count
+    # if count % 2 == 1:
+    #     action = ADVANCE
+    # else:
+    #     action RETREAT
 
     # action = moveTowardsCenterOfMap(body)
     return action
