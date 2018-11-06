@@ -21,5 +21,5 @@ def findClosestPowerup(body):
 
 
 def moveTowardPowerup(body):
-        closest = findClosestPowerup(body)
-        return (body, closest["x"], closest["y"])
+    closest = findClosestPowerup(body)
+    return (body, closest["x"], closest["y"])
