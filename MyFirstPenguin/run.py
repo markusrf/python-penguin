@@ -77,10 +77,10 @@ def count():
 
 def chooseAction(body):
     action = RETREAT
-    count = count()
-    if count == ROTATE_LEFT:
+    c = count()
+    if c == ROTATE_LEFT:
         return count
-    if count % 2 == 1:
+    if c % 2 == 1:
         action = ADVANCE
     else:
         action = RETREAT
