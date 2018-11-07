@@ -21,7 +21,7 @@ def suddenDeathMove(body):
     action = PASS
 
     # If no fire is sighted, run to the edge closes to you
-    if len(body["fire"]) == 0:
+    if len(body["fires"]) == 0:
         action = moveToClosestWall(body)
     # If fire is sighted, run away
     else:
@@ -55,9 +55,9 @@ def avoidFire(body):
     action = PASS
 
     # identify closest fire
-    closestFire = body["fire"][0]
+    closestFire = body["fires"][0]
     closestFireDistance = eucDist.eucDistance(body, closestFire["x"], closestFire["y"])
-    for fire in body["fire"][1:]:
+    for fire in body["fires"][1:]:
         fireDistance = eucDist.eucDistance(body, fire["x"], fire["y"])
         if fireDistance < closestFireDistance:
             closestFireDistance = fireDistance
