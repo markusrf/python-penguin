@@ -2,6 +2,7 @@ import os
 import json
 import random
 import math
+import moveTowardsPowerup as powerups
 
 import suddenDeath
 
@@ -69,9 +70,17 @@ def enemyPosition(body):
     except:
         return False
 
+def powerMove(body):
+    if powerups.canSeeHearts(body):
+       return moveTowardsPoint(powerups.moveTowardHeart(body))
+    else:
+       return moveTowardsPoint(powerups.moveTowardPowerup(body))
+
+
 def chooseAction(body):
     action = PASS
     action = moveTowardsCenterOfMap(body)
+
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
     return action
