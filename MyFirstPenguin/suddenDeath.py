@@ -58,8 +58,10 @@ def avoidFire(body):
     closestFire = body["fire"][0]
     closestFireDistance = eucDist.eucDistance(body, closestFire["x"], closestFire["y"])
     for fire in body["fire"][1:]:
-        closestFireDistance = eucDist.eucDistance(body, fire["x"], fire["y"])
-        closestFire = fire
+        fireDistance = eucDist.eucDistance(body, fire["x"], fire["y"])
+        if fireDistance < closestFireDistance:
+            closestFireDistance = fireDistance
+            closestFire = fire
     
     # find distance
     distX = abs(body["you"]["x"] - closestFire["x"])
