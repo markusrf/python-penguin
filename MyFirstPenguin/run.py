@@ -114,7 +114,7 @@ def retreat_from_enemy(body):
         else:
             return ROTATE_LEFT
     else:
-        pass
+        return PASS
 
 def enemyPosition(body):
     """Returnerer tuppel med x,y-koordinater hvis de eksisterer"""
@@ -174,7 +174,7 @@ def chooseAction(body):
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
     elif body["you"]["status"] == "hit":
-        escape()
+        action = retreat_from_enemy()
     elif enemyStraightAhead(body) and ableToWin(body):
         action = SHOOT
 
