@@ -64,8 +64,8 @@ def avoidFire(body):
             closestFire = fire
     
     # find distance
-    distX = abs(body["you"]["x"] - closestFire["x"])
-    distY = abs(body["you"]["y"] - closestFire["y"])
+    distX = (body["you"]["x"] - closestFire["x"])
+    distY = (body["you"]["y"] - closestFire["y"])
 
     # use distance to move oposite way
     # if closest in x direction, move away in the x axis
