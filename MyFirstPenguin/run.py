@@ -39,6 +39,21 @@ def wallInFrontOfPenguin(body):
         xValueToCheckForWall += 1
     return doesCellContainWall(body["walls"], xValueToCheckForWall, yValueToCheckForWall)
 
+def wallBehindPengiun(body):
+    xValueToCheckForWall = body["you"]["x"]
+    yValueToCheckForWall = body["you"]["y"]
+    bodyDirection = body["you"]["direction"]
+
+    if bodyDirection == "top":
+        yValueToCheckForWall += 1
+    elif bodyDirection == "bottom":
+        yValueToCheckForWall -= 1
+    elif bodyDirection == "left":
+        xValueToCheckForWall += 1
+    elif bodyDirection == "right":
+        xValueToCheckForWall -= 1
+    return doesCellContainWall(body["walls"], xValueToCheckForWall, yValueToCheckForWall)
+
 def moveTowardsPoint(body, pointX, pointY):
     penguinPositionX = body["you"]["x"]
     penguinPositionY = body["you"]["y"]
@@ -54,8 +69,34 @@ def moveTowardsPoint(body, pointX, pointY):
     elif penguinPositionY > pointY:
         plannedAction = MOVE_UP[bodyDirection]
 
-    if plannedAction == ADVANCE and wallInFrontOfPenguin(body):
-        plannedAction = SHOOT
+    if plannedAction == ADVANCE:
+        if wallInFrontOfPenguin(body):
+            plannedAction = SHOOT
+        
+        if (penguinPositionX == 0 and bodyDirection == "left"):
+            plannedAction = ROTATE_RIGHT
+        if (penguinPositionX == body["mapWidth"] and bodyDirection == "right"):
+            plannedAction = ROTATE_RIGHT
+        if (penguinPositionY == 0 and bodyDirection == "top"):
+            plannedAction = ROTATE_RIGHT
+        if (penguinPositionY == body["mapHeight"] and bodyDirection == "bottom"):
+            plannedAction = ROTATE_RIGHT
+
+    if plannedAction == RETREAT:
+        if wallBehindPengiun(body):
+            # TODO: avoid turning into walls
+            plannedAction = ROTATE_RIGHT
+        
+        if (penguinPositionX == 0 and bodyDirection == "right"):
+            plannedAction = ROTATE_RIGHT
+        if (penguinPositionX == body["mapWidth"] and bodyDirection == "left"):
+            plannedAction = ROTATE_RIGHT
+        if (penguinPositionY == 0 and bodyDirection == "bottom"):
+            plannedAction = ROTATE_RIGHT
+        if (penguinPositionY == body["mapHeight"] and bodyDirection == "top"):
+            plannedAction = ROTATE_RIGHT
+
+
     return plannedAction
 
 def moveTowardsCenterOfMap(body):
@@ -80,7 +121,7 @@ def powerMove(body):
 
 def chooseAction(body):
     action = PASS
-    action = moveTowardsCenterOfMap(body)
+    action = moveTowardsPoint(body, 0,-1)
 
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
