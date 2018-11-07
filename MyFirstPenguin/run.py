@@ -229,16 +229,17 @@ def chooseAction(body):
 
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
-    elif enemyStraightAhead(body):
-        if ableToWin(body, enemyPos):
-            action = turnToShoot(body, enemyPos)
-        else:
-            action = retreat_from_enemy(body)
-    elif body["you"]["status"] == "hit" and enemyPos:
-        if ableToWin(body, enemyPos):
-            action = turnToShoot(body, enemyPos)
-        else:
-            action = retreat_from_enemy(body)
+    elif enemyPos:
+        if enemyStraightAhead(body):
+            if ableToWin(body, enemyPos):
+                action = turnToShoot(body, enemyPos)
+            else:
+                action = retreat_from_enemy(body)
+        elif body["you"]["status"] == "hit" and enemyPos:
+            if ableToWin(body, enemyPos):
+                action = turnToShoot(body, enemyPos)
+            else:
+                action = retreat_from_enemy(body)
     elif bonuses:
         closest = powerups.findNearestHeart(px, py, bonuses)
         if closest is None:
