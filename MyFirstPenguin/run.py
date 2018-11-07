@@ -75,7 +75,7 @@ def wallInFrontOfPenguin(body):
         xValueToCheckForWall += 1
     return doesCellContainWall(body["walls"], xValueToCheckForWall, yValueToCheckForWall)
 
-def wallBehindPengiun(body):
+def wallBehindPenguin(body):
     xValueToCheckForWall = body["you"]["x"]
     yValueToCheckForWall = body["you"]["y"]
     bodyDirection = body["you"]["direction"]
@@ -142,7 +142,7 @@ def moveTowardsPoint(body, pointX, pointY):
                 plannedAction = ROTATE_LEFT
 
     if plannedAction == RETREAT:
-        if wallBehindPengiun(body):
+        if wallBehindPenguin(body):
             # TODO: avoid turning into walls
             plannedAction = ROTATE_RIGHT
 
