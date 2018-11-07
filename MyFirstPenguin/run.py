@@ -128,15 +128,15 @@ def moveTowardsPoint(body, pointX, pointY):
             plannedAction = ROTATE_RIGHT
             if penguinPositionY == 0:
                 plannedAction = ROTATE_LEFT
-        if (penguinPositionX == body["mapWidth"] and bodyDirection == "right"):
+        if (penguinPositionX == body["mapWidth"]-1 and bodyDirection == "right"):
             plannedAction = ROTATE_RIGHT
-            if penguinPositionY == body["mapHeight"]:
+            if penguinPositionY == body["mapHeight"]-1:
                 plannedAction = ROTATE_LEFT
         if (penguinPositionY == 0 and bodyDirection == "top"):
             plannedAction = ROTATE_RIGHT
-            if penguinPositionX == body["mapWidth"]:
+            if penguinPositionX == body["mapWidth"]-1:
                 plannedAction = ROTATE_LEFT
-        if (penguinPositionY == body["mapHeight"] and bodyDirection == "bottom"):
+        if (penguinPositionY == body["mapHeight"]-1 and bodyDirection == "bottom"):
             plannedAction = ROTATE_RIGHT
             if penguinPositionX == 0:
                 plannedAction = ROTATE_LEFT
@@ -150,15 +150,15 @@ def moveTowardsPoint(body, pointX, pointY):
             plannedAction = ROTATE_RIGHT
             if penguinPositionY == 0:
                 plannedAction = ROTATE_LEFT
-        if (penguinPositionX == body["mapWidth"] and bodyDirection == "left"):
+        if (penguinPositionX == body["mapWidth"]-1 and bodyDirection == "left"):
             plannedAction = ROTATE_RIGHT
-            if penguinPositionY == body["mapHeight"]:
+            if penguinPositionY == body["mapHeight"]-1:
                 plannedAction = ROTATE_LEFT
         if (penguinPositionY == 0 and bodyDirection == "bottom"):
             plannedAction = ROTATE_RIGHT
-            if penguinPositionX == body["mapWidth"]:
+            if penguinPositionX == body["mapWidth"]-1:
                 plannedAction = ROTATE_LEFT
-        if (penguinPositionY == body["mapHeight"] and bodyDirection == "top"):
+        if (penguinPositionY == body["mapHeight"]-1 and bodyDirection == "top"):
             plannedAction = ROTATE_RIGHT
             if penguinPositionX == 0:
                 plannedAction = ROTATE_LEFT
