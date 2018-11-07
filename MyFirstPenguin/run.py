@@ -43,6 +43,7 @@ MOVE_LEFT = {"top": ROTATE_LEFT, "bottom": ROTATE_RIGHT, "right": ROTATE_RIGHT, 
 
 ROTATE_LEFT_DIR = {"top": 'left', "bottom": 'right', "right": 'top', "left": 'bottom'}
 ROTATE_RIGHT_DIR = {"top": 'right', "bottom": 'left', "right": 'bottom', "left": 'top'}
+OPPOSITE_DIR = {'top': 'bottom', 'bottom': 'top', 'right': 'left', 'left': 'right'}
 
 
 def doesCellContainWall(walls, x, y):
@@ -282,6 +283,16 @@ def chooseAction(body):
         save_bonuses(body['bonusTiles'])
     bonuses = get_bonuses_from_memory()
 
+    if bonuses:
+        closest = powerups.findNearestHeart(px, py, bonuses)
+        if closest is None:
+            closest = get_closest(px, py, bonuses)
+        action = moveTowardsPoint(body, closest['x'], closest['y'])
+        if bonusInFrontOfPenguin(body):
+            delete_bonus_from_memory(closest)
+    else:
+        action = moveTowardsCenterOfMap(body)
+
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
     elif enemyPos:
@@ -295,15 +306,11 @@ def chooseAction(body):
                 action = turnToShoot(body, enemyPos)
             else:
                 action = retreat_from_enemy(body)
-    elif bonuses:
-        closest = powerups.findNearestHeart(px, py, bonuses)
-        if closest is None:
-            closest = get_closest(px, py, bonuses)
-        action = moveTowardsPoint(body, closest['x'], closest['y'])
-        if bonusInFrontOfPenguin(body):
-            delete_bonus_from_memory(closest)
-    else:
-        action = moveTowardsCenterOfMap(body)
+        elif (px == enemyPos[0] or py == enemyPos[1]) and enemyDirectionRelative(body, enemyPos) == OPPOSITE_DIR[body['enemies'][0]['direction']]:
+            if ableToWin(body, enemyPos):
+                action = turnToShoot(body, enemyPos)
+            else:
+                action = retreat_from_enemy(body)
 
     return action
 
