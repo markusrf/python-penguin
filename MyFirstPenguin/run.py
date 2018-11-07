@@ -72,9 +72,10 @@ def enemyPosition(body):
 
 def powerMove(body):
     if powerups.canSeeHearts(body):
-       return moveTowardsPoint(powerups.moveTowardHeart(body))
+        move = powerups.moveTowardHeart(body)
     else:
-       return moveTowardsPoint(powerups.moveTowardPowerup(body))
+        move = powerups.moveTowardPowerup(body)
+    return moveTowardsPoint(move[0],move[1],move[2])
 
 
 def chooseAction(body):
