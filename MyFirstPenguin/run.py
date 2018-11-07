@@ -123,7 +123,7 @@ def moveTowardsPoint(body, pointX, pointY):
     if plannedAction == ADVANCE:
         if wallInFrontOfPenguin(body):
             plannedAction = SHOOT
-        
+
         if (penguinPositionX == 0 and bodyDirection == "left"):
             plannedAction = ROTATE_RIGHT
             if penguinPositionY == 0:
@@ -145,7 +145,7 @@ def moveTowardsPoint(body, pointX, pointY):
         if wallBehindPengiun(body):
             # TODO: avoid turning into walls
             plannedAction = ROTATE_RIGHT
-        
+
         if (penguinPositionX == 0 and bodyDirection == "right"):
             plannedAction = ROTATE_RIGHT
             if penguinPositionY == 0:
