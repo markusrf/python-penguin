@@ -81,8 +81,9 @@ def chooseAction(body):
     action = PASS
     action = moveTowardsCenterOfMap(body)
 
-    if body["suddenDeath"] < 1:
+    if "suddenDeath" not in body:
         action = suddenDeath.suddenDeathMove(body)
+
     return action
 
 env = os.environ
