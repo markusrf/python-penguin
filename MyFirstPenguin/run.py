@@ -2,6 +2,9 @@ import os
 import json
 import random
 import math
+import moveTowardsPowerup as powerups
+
+import suddenDeath
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
@@ -10,10 +13,10 @@ RETREAT = "retreat"
 SHOOT = "shoot"
 PASS = "pass"
 
-MOVE_UP =  {"top" : ADVANCE, "bottom" : ROTATE_LEFT, "right" : ROTATE_LEFT ,"left" : ROTATE_RIGHT }
-MOVE_DOWN =  {"top" : ROTATE_LEFT, "bottom" : ADVANCE, "right" : ROTATE_RIGHT ,"left" : ROTATE_LEFT }
-MOVE_RIGHT = {"top" : ROTATE_RIGHT, "bottom" : ROTATE_LEFT, "right" : ADVANCE ,"left" : ROTATE_LEFT }
-MOVE_LEFT = {"top" : ROTATE_LEFT, "bottom" : ROTATE_RIGHT, "right" : ROTATE_RIGHT,"left" : ADVANCE }
+MOVE_UP =  {"top" : ADVANCE, "bottom" : RETREAT, "right" : ROTATE_LEFT ,"left" : ROTATE_RIGHT }
+MOVE_DOWN =  {"top" : RETREAT, "bottom" : ADVANCE, "right" : ROTATE_RIGHT ,"left" : ROTATE_LEFT }
+MOVE_RIGHT = {"top" : ROTATE_RIGHT, "bottom" : ROTATE_LEFT, "right" : ADVANCE ,"left" : RETREAT }
+MOVE_LEFT = {"top" : ROTATE_LEFT, "bottom" : ROTATE_RIGHT, "right" : RETREAT,"left" : ADVANCE }
 
 def doesCellContainWall(walls, x, y):
     for wall in walls:
@@ -91,10 +94,15 @@ def ableToWin(body):
 
     return enemyHealth // weaponDamage <= health // enemyDamage
 
-
+def powerMove(body):
+    if powerups.canSeeHearts(body):
+       return moveTowardsPoint(powerups.moveTowardHeart(body))
+    else:
+       return moveTowardsPoint(powerups.moveTowardPowerup(body))  
+  
 def chooseAction(body):
     if body["suddenDeath"] < 1:
-        action = suddenDeathMode(body)
+        action = suddenDeath.suddenDeathMove(body)
     elif body["status"] == "hit":
         escape()
     elif enemyStraightAhead(body) and ableToWin(body):
