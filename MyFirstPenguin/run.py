@@ -75,12 +75,20 @@ def moveTowardsPoint(body, pointX, pointY):
         
         if (penguinPositionX == 0 and bodyDirection == "left"):
             plannedAction = ROTATE_RIGHT
+            if penguinPositionY == 0:
+                plannedAction = ROTATE_LEFT
         if (penguinPositionX == body["mapWidth"] and bodyDirection == "right"):
             plannedAction = ROTATE_RIGHT
+            if penguinPositionY == body["mapHeight"]:
+                plannedAction = ROTATE_LEFT
         if (penguinPositionY == 0 and bodyDirection == "top"):
             plannedAction = ROTATE_RIGHT
+            if penguinPositionX == body["mapWidth"]:
+                plannedAction = ROTATE_LEFT
         if (penguinPositionY == body["mapHeight"] and bodyDirection == "bottom"):
             plannedAction = ROTATE_RIGHT
+            if penguinPositionX == 0:
+                plannedAction = ROTATE_LEFT
 
     if plannedAction == RETREAT:
         if wallBehindPengiun(body):
@@ -89,12 +97,20 @@ def moveTowardsPoint(body, pointX, pointY):
         
         if (penguinPositionX == 0 and bodyDirection == "right"):
             plannedAction = ROTATE_RIGHT
+            if penguinPositionY == 0:
+                plannedAction = ROTATE_LEFT
         if (penguinPositionX == body["mapWidth"] and bodyDirection == "left"):
             plannedAction = ROTATE_RIGHT
+            if penguinPositionY == body["mapHeight"]:
+                plannedAction = ROTATE_LEFT
         if (penguinPositionY == 0 and bodyDirection == "bottom"):
             plannedAction = ROTATE_RIGHT
+            if penguinPositionX == body["mapWidth"]:
+                plannedAction = ROTATE_LEFT
         if (penguinPositionY == body["mapHeight"] and bodyDirection == "top"):
             plannedAction = ROTATE_RIGHT
+            if penguinPositionX == 0:
+                plannedAction = ROTATE_LEFT
 
 
     return plannedAction
