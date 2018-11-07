@@ -117,8 +117,10 @@ def enemyStraightAhead(body):
         return enemyPos[1] > position[1]
     elif direction == "left":
         return enemyPos[0] < position[0]
-    else:
+    elif direction == "right":
         return enemyPos[0] > position[0]
+    else:
+        return False
 
 def ableToWin(body, enemyPos):
     """Returnerer true om du har mulighet for aa vinne en skyteduell"""
