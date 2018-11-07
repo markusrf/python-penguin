@@ -2,6 +2,9 @@ import os
 import json
 import random
 import math
+import moveTowardsPowerup as powerups
+
+import suddenDeath
 
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
@@ -118,7 +121,7 @@ def enemyStraightAhead(body):
         return enemyPos[0] > position[0]
 
 def ableToWin(body, enemyPos):
-    """Returnerer true om du har mulighet for å vinne en skyteduell"""
+    """Returnerer true om du har mulighet for aa vinne en skyteduell"""
     enemyRelDir = enemyDirectionRelative(body, enemyPos)
     enemyHealth = body["enemies"][0]["strength"]
     enemyDamage = body["enemies"][0]["weaponDamage"]
@@ -141,11 +144,17 @@ def turnToShoot(body, enemyPos):
     elif turns == 1 or turns == 2:
         return ROTATE_RIGHT
 
+def powerMove(body):
+    if powerups.canSeeHearts(body):
+        move = powerups.moveTowardHeart(body)
+    else:
+        move = powerups.moveTowardPowerup(body)
+    return moveTowardsPoint(move[0],move[1],move[2])
 
 def chooseAction(body):
     enemyPos = enemyPosition(body)
     if body["suddenDeath"] < 1:
-        action = suddenDeathMode(body)
+        action = suddenDeath.suddenDeathMove(body)
     elif enemyStraightAhead(body):
         if ableToWin(body, enemyPos):
             action = turnToShoot(body, enemyPos)
@@ -158,22 +167,24 @@ def chooseAction(body):
             action = retreat_from_enemy(body)
     else:
         action = moveTowardsCenterOfMap(body)
+
     return action
 
+  
+if __name__=="__main__":
+    env = os.environ
+    req_params_query = env['REQ_PARAMS_QUERY']
+    responseBody = open(env['res'], 'w')
 
-env = os.environ
-req_params_query = env['REQ_PARAMS_QUERY']
-responseBody = open(env['res'], 'w')
+    response = {}
+    returnObject = {}
+    if req_params_query == "info":
+        returnObject["name"] = "PiNgU"
+        returnObject["team"] = "Team Noot Noot"
+    elif req_params_query == "command":
+        body = json.loads(open(env["req"], "r").read())
+        returnObject["command"] = chooseAction(body)
 
-response = {}
-returnObject = {}
-if req_params_query == "info":
-    returnObject["name"] = "PiNgU"
-    returnObject["team"] = "Team Noot Noot"
-elif req_params_query == "command":
-    body = json.loads(open(env["req"], "r").read())
-    returnObject["command"] = chooseAction(body)
-
-response["body"] = returnObject
-responseBody.write(json.dumps(response))
-responseBody.close()
+    response["body"] = returnObject
+    responseBody.write(json.dumps(response))
+    responseBody.close()
