@@ -300,7 +300,8 @@ def chooseAction(body):
         # if bonusInFrontOfPenguin(body):
         #     delete_bonus_from_memory(closest)
     else:
-        action = moveTowardsCenterOfMap(body)
+        # action = moveTowardsCenterOfMap(body)
+        action = moveTowardsPoint(body, 3, 3)
 
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
