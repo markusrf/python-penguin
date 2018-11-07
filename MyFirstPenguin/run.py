@@ -109,6 +109,7 @@ def chooseAction(body):
         action = SHOOT
     else:
         action = moveTowardsCenterOfMap(body)
+
     return action
 
 
