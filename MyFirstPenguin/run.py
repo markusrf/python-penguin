@@ -286,17 +286,19 @@ def chooseAction(body):
     enemyPos = enemyPosition(body)
     px, py = body['you']['x'], body['you']['y']
 
-    if body['bonusTiles']:
-        save_bonuses(body['bonusTiles'])
-    bonuses = get_bonuses_from_memory()
+    # if body['bonusTiles']:
+    #     save_bonuses(body['bonusTiles'])
+    # bonuses = get_bonuses_from_memory()
+
+    bonuses = body['bonusTiles']
 
     if bonuses:
-        closest = powerups.findNearestHeart(px, py, bonuses)
-        if closest is None:
-            closest = get_closest(px, py, bonuses)
+        # closest = powerups.findNearestHeart(px, py, bonuses)
+        # if closest is None:
+        closest = get_closest(px, py, bonuses)
         action = moveTowardsPoint(body, closest['x'], closest['y'])
-        if bonusInFrontOfPenguin(body):
-            delete_bonus_from_memory(closest)
+        # if bonusInFrontOfPenguin(body):
+        #     delete_bonus_from_memory(closest)
     else:
         action = moveTowardsCenterOfMap(body)
 
