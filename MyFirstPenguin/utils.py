@@ -11,8 +11,15 @@ def count():
 def euc_dist(x1, y1, x2, y2):
     return sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
+def manhatten_dist(x1, y1, x2, y2):
+    return abs(x1 - x2) + abs(y1 - y2)
+
 def get_closest(px, py, points):
-    d = [(euc_dist(px, py, points[i]['x'], points[i]['y']), i) for i in range(len(points))]
+    d = [(manhatten_dist(px, py, points[i]['x'], points[i]['y']), i) for i in range(len(points))]
+    return points[min(d)[1]]
+
+def get_closest_heart(px, py, points):
+    d = [(manhatten_dist(px, py, points[i]['x'], points[i]['y']), i) for i in range(len(points)) if points[i]['type'] == 'strength']
     return points[min(d)[1]]
 
 def setup_data():
