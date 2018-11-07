@@ -70,6 +70,30 @@ def enemyPosition(body):
     except:
         return False
 
+def enemyStraightAhead(body):
+    """Returnerer true om fienden er rett foran deg"""
+    enemyPos = enemyPosition(body)
+    position = body["you"]["x"], body["you"]["y"]
+    direction = body["you"]["direction"]
+
+    if direction == "top":
+        return enemyPos[1] < position[1]
+    elif direction == "bottom":
+        return enemyPos[1] > position[1]
+    elif direction == "left":
+        return enemyPos[0] < position[0]
+    else:
+        return enemyPos[0] > position[0]
+
+def ableToWin(body):
+    """Returnerer true om du har mulighet for å vinne en skyteduell"""
+    enemyHealth = body["enemies"][0]["strength"]
+    enemyDamage = body["enemies"][0]["weaponDamage"]
+    health = body["you"]["strength"]
+    weaponDamage = body["you"]["weaponDamage"]
+
+    return enemyHealth // weaponDamage <= health // enemyDamage
+
 def powerMove(body):
     if powerups.canSeeHearts(body):
         move = powerups.moveTowardHeart(body)
@@ -77,16 +101,19 @@ def powerMove(body):
         move = powerups.moveTowardPowerup(body)
     return moveTowardsPoint(move[0],move[1],move[2])
 
-
 def chooseAction(body):
-    action = PASS
-    action = moveTowardsCenterOfMap(body)
-
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
+    elif body["status"] == "hit":
+        escape()
+    elif enemyStraightAhead(body) and ableToWin(body):
+        action = SHOOT
+    else:
+        action = moveTowardsCenterOfMap(body)
 
     return action
 
+  
 if __name__=="__main__":
     env = os.environ
     req_params_query = env['REQ_PARAMS_QUERY']
