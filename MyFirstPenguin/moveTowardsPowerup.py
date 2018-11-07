@@ -1,4 +1,5 @@
 import eucDist
+from utils import *
 
 def canSeePowerup(body):
     if  body["bonusTiles"]:
@@ -29,14 +30,14 @@ def moveTowardPowerup(body):
     print(closest)
     return (body, closest["x"], closest["y"])
 
-def findNearestHeart(body):
-    hearts = [x for x in body["bonusTiles"] if x["type"] == "strength"]
-    distance = 99
-    i = -1
+def findNearestHeart(px, py, bonuses):
+    hearts = [x for x in bonuses if x["type"] == "strength"]
+    if not hearts:
+        return None
+    distance = 999
     closestHeart = hearts[0]
-    for x in hearts:
-        i += 1
-        distToHeart = eucDist.eucDistance(body, x["x"], x["y"])
+    for i, x in enumerate(hearts):
+        distToHeart = manhatten_dist(px, py, x['x'], x['y'])
         if distToHeart < distance:
             distance = distToHeart
             closestHeart = hearts[i]
