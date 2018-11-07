@@ -13,13 +13,37 @@ RETREAT = "retreat"
 SHOOT = "shoot"
 PASS = "pass"
 
-MOVE_UP =  {"top" : ADVANCE, "bottom" : RETREAT, "right" : ROTATE_LEFT ,"left" : ROTATE_RIGHT }
-MOVE_DOWN =  {"top" : RETREAT, "bottom" : ADVANCE, "right" : ROTATE_RIGHT ,"left" : ROTATE_LEFT }
-MOVE_RIGHT = {"top" : ROTATE_RIGHT, "bottom" : ROTATE_LEFT, "right" : ADVANCE ,"left" : RETREAT }
-MOVE_LEFT = {"top" : ROTATE_LEFT, "bottom" : ROTATE_RIGHT, "right" : RETREAT,"left" : ADVANCE }
+TURNS = {
+    "top": {
+        "top": 0,
+        "left": -1,
+        "right": 1,
+        "bottom": 2
+    }, "left": {
+        "left": 0,
+        "bottom": -1,
+        "top": 1,
+        "right": 2
+    }, "bottom": {
+        "bottom": 0,
+        "left": 1,
+        "right": -1,
+        "top": 2
+    }, "right": {
+        "right": 0,
+        "top": -1,
+        "bottom": 1,
+        "left": 2
+    }}
+
+MOVE_UP = {"top": ADVANCE, "bottom": ROTATE_LEFT, "right": ROTATE_LEFT, "left": ROTATE_RIGHT}
+MOVE_DOWN = {"top": ROTATE_LEFT, "bottom": ADVANCE, "right": ROTATE_RIGHT, "left": ROTATE_LEFT}
+MOVE_RIGHT = {"top": ROTATE_RIGHT, "bottom": ROTATE_LEFT, "right": ADVANCE, "left": ROTATE_LEFT}
+MOVE_LEFT = {"top": ROTATE_LEFT, "bottom": ROTATE_RIGHT, "right": ROTATE_RIGHT, "left": ADVANCE}
 
 ROTATE_LEFT_DIR = {"top": 'left', "bottom": 'right', "right": 'top', "left": 'bottom'}
 ROTATE_RIGHT_DIR = {"top": 'right', "bottom": 'left', "right": 'bottom', "left": 'top'}
+
 
 def doesCellContainWall(walls, x, y):
     for wall in walls:
@@ -27,11 +51,13 @@ def doesCellContainWall(walls, x, y):
             return True
     return False
 
+
 def doesCellContainBonus(bonuses, x, y):
     for b in bonuses:
         if b["x"] == x and b["y"] == y:
             return True
     return False
+
 
 def wallInFrontOfPenguin(body):
     xValueToCheckForWall = body["you"]["x"]
@@ -48,6 +74,7 @@ def wallInFrontOfPenguin(body):
         xValueToCheckForWall += 1
     return doesCellContainWall(body["walls"], xValueToCheckForWall, yValueToCheckForWall)
 
+
 def bonusInFrontOfPenguin(body):
     xValueToCheckForWall = body["you"]["x"]
     yValueToCheckForWall = body["you"]["y"]
@@ -63,6 +90,7 @@ def bonusInFrontOfPenguin(body):
         xValueToCheckForWall += 1
     return doesCellContainBonus(body["bonusTiles"], xValueToCheckForWall, yValueToCheckForWall)
 
+
 def moveTowardsPoint(body, pointX, pointY):
     penguinPositionX = body["you"]["x"]
     penguinPositionY = body["you"]["y"]
@@ -70,7 +98,7 @@ def moveTowardsPoint(body, pointX, pointY):
     bodyDirection = body["you"]["direction"]
 
     if penguinPositionX < pointX:
-        plannedAction =  MOVE_RIGHT[bodyDirection]
+        plannedAction = MOVE_RIGHT[bodyDirection]
     elif penguinPositionX > pointX:
         plannedAction = MOVE_LEFT[bodyDirection]
     elif penguinPositionY < pointY:
@@ -81,6 +109,7 @@ def moveTowardsPoint(body, pointX, pointY):
     if plannedAction == ADVANCE and wallInFrontOfPenguin(body):
         plannedAction = SHOOT
     return plannedAction
+
 
 def moveTowardsCenterOfMap(body):
     centerPointX = math.floor(body["mapWidth"] / 2)
@@ -116,12 +145,27 @@ def retreat_from_enemy(body):
     else:
         return PASS
 
+
 def enemyPosition(body):
     """Returnerer tuppel med x,y-koordinater hvis de eksisterer"""
     try:
         return body["enemies"][0]["x"], body["enemies"][0]["y"]
     except:
         return False
+
+
+def enemyDirectionRelative(body, enemyPos):
+    """Returnerer fiendens retning relativt til deg"""
+    position = body["you"]["x"], body["you"]["y"]
+    if enemyPos[0] < position[0]:
+        return "left"
+    elif enemyPos[0] > position[0]:
+        return "right"
+    elif enemyPos[1] < position[1]:
+        return "top"
+    else:
+        return "bottom"
+
 
 def enemyStraightAhead(body):
     """Returnerer true om fienden er rett foran deg"""
@@ -135,53 +179,80 @@ def enemyStraightAhead(body):
         return enemyPos[1] > position[1]
     elif direction == "left":
         return enemyPos[0] < position[0]
-    else:
+    elif direction == "right":
         return enemyPos[0] > position[0]
+    else:
+        return False
 
-def ableToWin(body):
+
+def ableToWin(body, enemyPos):
     """Returnerer true om du har mulighet for aa vinne en skyteduell"""
+    enemyRelDir = enemyDirectionRelative(body, enemyPos)
     enemyHealth = body["enemies"][0]["strength"]
     enemyDamage = body["enemies"][0]["weaponDamage"]
+    direction = body["you"]["direction"]
     health = body["you"]["strength"]
     weaponDamage = body["you"]["weaponDamage"]
+    turns = TURNS[direction][enemyRelDir]
 
-    return enemyHealth // weaponDamage <= health // enemyDamage
+    return enemyHealth // weaponDamage <= (health - abs(turns) * enemyDamage) // enemyDamage
+
+
+def turnToShoot(body, enemyPos):
+    direction = body["you"]["direction"]
+    enemyRelDir = enemyDirectionRelative(body, enemyPos)
+    turns = TURNS[direction][enemyRelDir]
+
+    if turns == 0:
+        return SHOOT
+    elif turns == -1:
+        return ROTATE_LEFT
+    elif turns == 1 or turns == 2:
+        return ROTATE_RIGHT
+
 
 def powerMove(body):
     if powerups.canSeeHearts(body):
         move = powerups.moveTowardHeart(body)
     else:
         move = powerups.moveTowardPowerup(body)
-    return moveTowardsPoint(move[0],move[1],move[2])
-
-
+    return moveTowardsPoint(move[0], move[1], move[2])
 
 
 def chooseAction(body):
-    action = moveTowardsCenterOfMap(body)
+    enemyPos = enemyPosition(body)
     px, py = body['you']['x'], body['you']['y']
+
     if body['bonusTiles']:
         save_bonuses(body['bonusTiles'])
     bonuses = get_bonuses_from_memory()
-    if bonuses:
+
+    if body["suddenDeath"] < 1:
+        action = suddenDeath.suddenDeathMove(body)
+    elif enemyStraightAhead(body):
+        if ableToWin(body, enemyPos):
+            action = turnToShoot(body, enemyPos)
+        else:
+            action = retreat_from_enemy(body)
+    elif body["you"]["status"] == "hit" and enemyPos:
+        if ableToWin(body, enemyPos):
+            action = turnToShoot(body, enemyPos)
+        else:
+            action = retreat_from_enemy(body)
+    elif bonuses:
         closest = powerups.findNearestHeart(px, py, bonuses)
         if closest is None:
             closest = get_closest(px, py, bonuses)
         action = moveTowardsPoint(body, closest['x'], closest['y'])
         if bonusInFrontOfPenguin(body):
             delete_bonus_from_memory(closest)
-
-    if body["suddenDeath"] < 1:
-        action = suddenDeath.suddenDeathMove(body)
-    elif body["you"]["status"] == "hit":
-        action = retreat_from_enemy()
-    elif enemyStraightAhead(body) and ableToWin(body):
-        action = SHOOT
+    else:
+        action = moveTowardsCenterOfMap(body)
 
     return action
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     env = os.environ
     req_params_query = env['REQ_PARAMS_QUERY']
     responseBody = open(env['res'], 'w')
