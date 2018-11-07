@@ -173,7 +173,7 @@ def chooseAction(body):
 
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
-    elif body["status"] == "hit":
+    elif body["you"]["status"] == "hit":
         escape()
     elif enemyStraightAhead(body) and ableToWin(body):
         action = SHOOT
