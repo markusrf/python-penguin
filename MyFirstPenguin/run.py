@@ -251,7 +251,7 @@ def chooseAction(body):
                 action = turnToShoot(body, enemyPos)
             else:
                 action = retreat_from_enemy(body)
-        elif (px == enemyPos[0] or py = enemyPos[1]) and enemyDirectionRelative(body, enemyPos) == OPPOSITE_DIR[body['enemies'][0]['direction']]:
+        elif (px == enemyPos[0] or py == enemyPos[1]) and enemyDirectionRelative(body, enemyPos) == OPPOSITE_DIR[body['enemies'][0]['direction']]:
             if ableToWin(body, enemyPos):
                 action = turnToShoot(body, enemyPos)
             else:
