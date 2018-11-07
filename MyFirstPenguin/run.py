@@ -4,6 +4,8 @@ import random
 import math
 import moveTowardsPowerup as powerups
 
+import suddenDeath
+
 ROTATE_LEFT = "rotate-left"
 ROTATE_RIGHT = "rotate-right"
 ADVANCE = "advance"
@@ -11,10 +13,10 @@ RETREAT = "retreat"
 SHOOT = "shoot"
 PASS = "pass"
 
-MOVE_UP =  {"top" : ADVANCE, "bottom" : ROTATE_LEFT, "right" : ROTATE_LEFT ,"left" : ROTATE_RIGHT }
-MOVE_DOWN =  {"top" : ROTATE_LEFT, "bottom" : ADVANCE, "right" : ROTATE_RIGHT ,"left" : ROTATE_LEFT }
-MOVE_RIGHT = {"top" : ROTATE_RIGHT, "bottom" : ROTATE_LEFT, "right" : ADVANCE ,"left" : ROTATE_LEFT }
-MOVE_LEFT = {"top" : ROTATE_LEFT, "bottom" : ROTATE_RIGHT, "right" : ROTATE_RIGHT,"left" : ADVANCE }
+MOVE_UP =  {"top" : ADVANCE, "bottom" : RETREAT, "right" : ROTATE_LEFT ,"left" : ROTATE_RIGHT }
+MOVE_DOWN =  {"top" : RETREAT, "bottom" : ADVANCE, "right" : ROTATE_RIGHT ,"left" : ROTATE_LEFT }
+MOVE_RIGHT = {"top" : ROTATE_RIGHT, "bottom" : ROTATE_LEFT, "right" : ADVANCE ,"left" : RETREAT }
+MOVE_LEFT = {"top" : ROTATE_LEFT, "bottom" : ROTATE_RIGHT, "right" : RETREAT,"left" : ADVANCE }
 
 def doesCellContainWall(walls, x, y):
     for wall in walls:
@@ -78,9 +80,9 @@ def powerMove(body):
 def chooseAction(body):
     action = PASS
     action = moveTowardsCenterOfMap(body)
-    if powerups.canSeePowerup(body):
-        action = powerMove(body)
 
+    if body["suddenDeath"] < 1:
+        action = suddenDeath.suddenDeathMove(body)
     return action
 
 env = os.environ
