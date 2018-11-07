@@ -81,7 +81,7 @@ def chooseAction(body):
     action = PASS
     action = moveTowardsCenterOfMap(body)
 
-    if "suddenDeath" not in body:
+    if "suddenDeath" in body:
         action = suddenDeath.suddenDeathMove(body)
 
     return action
