@@ -10,6 +10,29 @@ RETREAT = "retreat"
 SHOOT = "shoot"
 PASS = "pass"
 
+TURNS = {
+    "top":{
+        "top":0,
+        "left":-1,
+        "right":1,
+        "bottom":2
+    }, "left":{
+        "left":0,
+        "bottom":-1,
+        "top":1,
+        "right":2
+    }, "bottom":{
+        "bottom":0,
+        "left":1,
+        "right":-1,
+        "top":2
+    }, "right":{
+        "right":0,
+        "top":-1,
+        "bottom":1,
+        "left":2
+    }}
+
 MOVE_UP =  {"top" : ADVANCE, "bottom" : ROTATE_LEFT, "right" : ROTATE_LEFT ,"left" : ROTATE_RIGHT }
 MOVE_DOWN =  {"top" : ROTATE_LEFT, "bottom" : ADVANCE, "right" : ROTATE_RIGHT ,"left" : ROTATE_LEFT }
 MOVE_RIGHT = {"top" : ROTATE_RIGHT, "bottom" : ROTATE_LEFT, "right" : ADVANCE ,"left" : ROTATE_LEFT }
@@ -67,6 +90,18 @@ def enemyPosition(body):
     except:
         return False
 
+def enemyDirectionRelative(body, enemyPos):
+    """Returnerer fiendens retning relativt til deg"""
+    position = body["you"]["x"], body["you"]["y"]
+    if enemyPos[0] < position[0]:
+        return "left"
+    elif enemyPos[0] > position[0]:
+        return "right"
+    elif enemyPos[1] < position[1]:
+        return "top"
+    else:
+        return "bottom"
+
 def enemyStraightAhead(body):
     """Returnerer true om fienden er rett foran deg"""
     enemyPos = enemyPosition(body)
@@ -82,23 +117,45 @@ def enemyStraightAhead(body):
     else:
         return enemyPos[0] > position[0]
 
-def ableToWin(body):
+def ableToWin(body, enemyPos):
     """Returnerer true om du har mulighet for å vinne en skyteduell"""
+    enemyRelDir = enemyDirectionRelative(body, enemyPos)
     enemyHealth = body["enemies"][0]["strength"]
     enemyDamage = body["enemies"][0]["weaponDamage"]
+    direction = body["you"]["direction"]
     health = body["you"]["strength"]
     weaponDamage = body["you"]["weaponDamage"]
+    turns = TURNS[direction][enemyRelDir]
 
-    return enemyHealth // weaponDamage <= health // enemyDamage
+    return enemyHealth // weaponDamage <= (health - abs(turns)*enemyDamage) // enemyDamage
+
+def turnToShoot(body, enemyPos):
+    direction = body["you"]["direction"]
+    enemyRelDir = enemyDirectionRelative(body, enemyPos)
+    turns = TURNS[direction][enemyRelDir]
+
+    if turns == 0:
+        return SHOOT
+    elif turns == -1:
+        return ROTATE_LEFT
+    elif turns == 1 or turns == 2:
+        return ROTATE_RIGHT
 
 
 def chooseAction(body):
+    enemyPos = enemyPosition(body)
     if body["suddenDeath"] < 1:
         action = suddenDeathMode(body)
-    elif body["status"] == "hit":
-        escape()
-    elif enemyStraightAhead(body) and ableToWin(body):
-        action = SHOOT
+    elif enemyStraightAhead(body):
+        if ableToWin(body, enemyPos):
+            action = turnToShoot(body, enemyPos)
+        else:
+            action = retreat_from_enemy(body)
+    elif body["status"] == "hit" and enemyPos:
+        if ableToWin(body, enemyPos):
+            action = turnToShoot(body, enemyPos)
+        else:
+            action = retreat_from_enemy(body)
     else:
         action = moveTowardsCenterOfMap(body)
     return action
