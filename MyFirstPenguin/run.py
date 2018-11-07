@@ -139,7 +139,7 @@ def enemyStraightAhead(body):
         return enemyPos[0] > position[0]
 
 def ableToWin(body):
-    """Returnerer true om du har mulighet for å vinne en skyteduell"""
+    """Returnerer true om du har mulighet for aa vinne en skyteduell"""
     enemyHealth = body["enemies"][0]["strength"]
     enemyDamage = body["enemies"][0]["weaponDamage"]
     health = body["you"]["strength"]
