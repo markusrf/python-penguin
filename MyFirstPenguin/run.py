@@ -201,7 +201,12 @@ def retreat_from_enemy(body):
     else:
         if wallInFrontOfPenguin(body) and not wallBehindPenguin(body):
             return RETREAT
-        elif not wallInFrontOfPenguin(body)
+        elif not wallInFrontOfPenguin(body) and wallBehindPenguin(body):
+            return ADVANCE
+        elif: not wallInFrontOfPenguin(body) and not wallBehindPenguin(body):
+            return RETREAT
+        else:
+            ROTATE_LEFT
 
 
 def enemyPosition(body):
