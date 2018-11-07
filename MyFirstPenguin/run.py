@@ -237,13 +237,13 @@ def enemyStraightAhead(body):
     direction = body["you"]["direction"]
 
     if direction == "top":
-        return enemyPos[1] < position[1]
+        return enemyPos[1] < position[1] and enemyPos[0] == position[0]
     elif direction == "bottom":
-        return enemyPos[1] > position[1]
+        return enemyPos[1] > position[1] and enemyPos[0] == position[0]
     elif direction == "left":
-        return enemyPos[0] < position[0]
+        return enemyPos[0] < position[0] and enemyPos[1] == position[1]
     elif direction == "right":
-        return enemyPos[0] > position[0]
+        return enemyPos[0] > position[0] and enemyPos[1] == position[1]
     else:
         return False
 
