@@ -203,7 +203,7 @@ def retreat_from_enemy(body):
             return RETREAT
         elif not wallInFrontOfPenguin(body) and wallBehindPenguin(body):
             return ADVANCE
-        elif: not wallInFrontOfPenguin(body) and not wallBehindPenguin(body):
+        elif not wallInFrontOfPenguin(body) and not wallBehindPenguin(body):
             return RETREAT
         else:
             ROTATE_LEFT
@@ -308,7 +308,7 @@ def chooseAction(body):
                 action = turnToShoot(body, enemyPos)
             else:
                 action = retreat_from_enemy(body)
-        elif body["you"]["status"] == "hit" and enemyPos:
+        elif body["you"]["status"] == "hit":
             if ableToWin(body, enemyPos):
                 action = turnToShoot(body, enemyPos)
             else:
