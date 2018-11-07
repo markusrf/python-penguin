@@ -75,7 +75,7 @@ def wallInFrontOfPenguin(body):
         xValueToCheckForWall += 1
     return doesCellContainWall(body["walls"], xValueToCheckForWall, yValueToCheckForWall)
 
-def wallBehindPengiun(body):
+def wallBehindPenguin(body):
     xValueToCheckForWall = body["you"]["x"]
     yValueToCheckForWall = body["you"]["y"]
     bodyDirection = body["you"]["direction"]
@@ -123,7 +123,7 @@ def moveTowardsPoint(body, pointX, pointY):
     if plannedAction == ADVANCE:
         if wallInFrontOfPenguin(body):
             plannedAction = SHOOT
-        
+
         if (penguinPositionX == 0 and bodyDirection == "left"):
             plannedAction = ROTATE_RIGHT
             if penguinPositionY == 0:
@@ -142,10 +142,10 @@ def moveTowardsPoint(body, pointX, pointY):
                 plannedAction = ROTATE_LEFT
 
     if plannedAction == RETREAT:
-        if wallBehindPengiun(body):
+        if wallBehindPenguin(body):
             # TODO: avoid turning into walls
             plannedAction = ROTATE_RIGHT
-        
+
         if (penguinPositionX == 0 and bodyDirection == "right"):
             plannedAction = ROTATE_RIGHT
             if penguinPositionY == 0:
@@ -199,7 +199,14 @@ def retreat_from_enemy(body):
         else:
             return ROTATE_LEFT
     else:
-        return PASS
+        if wallInFrontOfPenguin(body) and not wallBehindPenguin(body):
+            return RETREAT
+        elif not wallInFrontOfPenguin(body) and wallBehindPenguin(body):
+            return ADVANCE
+        elif not wallInFrontOfPenguin(body) and not wallBehindPenguin(body):
+            return RETREAT
+        else:
+            ROTATE_LEFT
 
 
 def enemyPosition(body):
@@ -230,13 +237,13 @@ def enemyStraightAhead(body):
     direction = body["you"]["direction"]
 
     if direction == "top":
-        return enemyPos[1] < position[1]
+        return enemyPos[1] < position[1] and enemyPos[0] == position[0]
     elif direction == "bottom":
-        return enemyPos[1] > position[1]
+        return enemyPos[1] > position[1] and enemyPos[0] == position[0]
     elif direction == "left":
-        return enemyPos[0] < position[0]
+        return enemyPos[0] < position[0] and enemyPos[1] == position[1]
     elif direction == "right":
-        return enemyPos[0] > position[0]
+        return enemyPos[0] > position[0] and enemyPos[1] == position[1]
     else:
         return False
 
@@ -301,7 +308,7 @@ def chooseAction(body):
                 action = turnToShoot(body, enemyPos)
             else:
                 action = retreat_from_enemy(body)
-        elif body["you"]["status"] == "hit" and enemyPos:
+        elif body["you"]["status"] == "hit":
             if ableToWin(body, enemyPos):
                 action = turnToShoot(body, enemyPos)
             else:
