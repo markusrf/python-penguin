@@ -302,6 +302,8 @@ def chooseAction(body):
     else:
         # action = moveTowardsCenterOfMap(body)
         action = moveTowardsPoint(body, 3, 3)
+        if px == 3 and py == 3:
+            action = SHOOT
 
     if body["suddenDeath"] < 1:
         action = suddenDeath.suddenDeathMove(body)
