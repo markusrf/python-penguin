@@ -48,6 +48,17 @@ def get_bonuses_from_memory():
         bonuses = eval(f.readline().strip())
     return [{'x': b[0], 'y': b[1], 'type': b[2], 'value': b[3]} for b in bonuses]
 
+# def enemy_in_aim(you, enemy):
+#     if 'x' not in enemy:
+#         return False
+#     dir = you['direction']
+
+# def retreat_from_enemy(body):
+#     enemy = body['enemies'][0]
+#     you = body['you']
+#     ex, ey, edir = enemy['x'], enemy['y'], enemy['direction']
+#     px, py, pdir = you['x'], you['y'], you['direction']
+
 #%%
 # setup_bonuses()
 #
