@@ -114,7 +114,9 @@ def retreat_from_enemy(body):
         else:
             return ROTATE_LEFT
     else:
-        return PASS
+        if wallInFrontOfPenguin(body) and not wallBehindPenguin(body):
+            return RETREAT
+        elif not wallInFrontOfPenguin(body)
 
 def enemyPosition(body):
     """Returnerer tuppel med x,y-koordinater hvis de eksisterer"""
