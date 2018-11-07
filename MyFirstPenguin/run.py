@@ -86,19 +86,19 @@ def chooseAction(body):
         action = suddenDeath.suddenDeathMove(body)
     return action
 
-# env = os.environ
-# req_params_query = env['REQ_PARAMS_QUERY']
-# responseBody = open(env['res'], 'w')
-#
-# response = {}
-# returnObject = {}
-# if req_params_query == "info":
-#     returnObject["name"] = "PiNgU"
-#     returnObject["team"] = "Team Noot Noot"
-# elif req_params_query == "command":
-#     body = json.loads(open(env["req"], "r").read())
-#     returnObject["command"] = chooseAction(body)
-#
-# response["body"] = returnObject
-# responseBody.write(json.dumps(response))
-# responseBody.close()
+env = os.environ
+req_params_query = env['REQ_PARAMS_QUERY']
+responseBody = open(env['res'], 'w')
+
+response = {}
+returnObject = {}
+if req_params_query == "info":
+    returnObject["name"] = "PiNgU"
+    returnObject["team"] = "Team Noot Noot"
+elif req_params_query == "command":
+    body = json.loads(open(env["req"], "r").read())
+    returnObject["command"] = chooseAction(body)
+
+response["body"] = returnObject
+responseBody.write(json.dumps(response))
+responseBody.close()
